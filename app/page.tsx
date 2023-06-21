@@ -45,7 +45,7 @@ function ProductCard({
 
 export default function Home() {
   const { entrees, desserts } = jsonData;
-  const randomEntree =
+  const randomDessert =
     desserts[Math.round(Math.random() * (desserts.length - 1))];
   return (
     <>
@@ -79,14 +79,14 @@ export default function Home() {
         <div className="relative rounded-full overflow-hidden aspect-square">
           <Image
             className="object-cover"
-            alt={randomEntree.image.alt}
-            src={randomEntree.image.src}
+            alt={randomDessert.image.alt}
+            src={randomDessert.image.src}
             fill
           />
           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black opacity-50" />
           <div className="relative grid text-white gap-6 justify-items-center text-center px-4 pt-24 pb-16">
-            <h4 className="text-4xl font-extrabold">{randomEntree.name}</h4>
-            <p className="text-xl font-bold">{randomEntree.description}</p>
+            <h4 className="text-4xl font-extrabold">{randomDessert.name}</h4>
+            <p className="text-xl font-bold">{randomDessert.description}</p>
             <button className="px-8 py-4 bg-yellow-500 font-extrabold text-xl rounded-full">
               Order Now
             </button>
