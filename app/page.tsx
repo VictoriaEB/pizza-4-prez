@@ -48,7 +48,7 @@ export default function Home() {
   const randomDessert =
     desserts[Math.round(Math.random() * (desserts.length - 1))];
   return (
-    <>
+    <main>
       <section className="grid items-center relative -mt-20 px-4 pt-20 min-h-[100vh]">
         <Image
           className="object-cover"
@@ -98,6 +98,6 @@ export default function Home() {
           <ProductCard key={i} {...dessert} />
         ))}
       </section>
-    </>
+    </main>
   );
 }

@@ -23,13 +23,16 @@ export default function NavBar() {
         hasBg ? "bg-stone-900 shadow" : ""
       }`}
     >
-      <div className="gap-2 items-center grid grid-cols-[1fr_auto] leading-none">
+      <Link
+        href="/"
+        className="gap-2 items-center grid grid-cols-[1fr_auto] leading-none"
+      >
         <FaPizzaSlice className="text-3xl " />
         <div className="grid">
           Pizza
           <span>4 Prez</span>
         </div>
-      </div>
+      </Link>
       <div className="flex text-3xl gap-8">
         <FaShoppingCart
           onClick={() => setIsOpen((o) => (o === "cart" ? null : "cart"))}
@@ -44,10 +47,10 @@ export default function NavBar() {
         }`}
       >
         <div className="right-0 w-80 grid gap-6 p-4 mt-16 text-right absolute">
-          <div>Order Status</div>
-          <div>Locations</div>
+          <Link href="/order-status">Order Status</Link>
+          <Link href="/locations">Locations</Link>
           <Link href="/contact-us">Contact Us</Link>
-          <div>Our Story</div>
+          <Link href="/our-story">Our Story</Link>
         </div>
       </div>
 

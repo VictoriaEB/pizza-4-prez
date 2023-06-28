@@ -1,7 +1,7 @@
-export default function ContactUs() {
+export default function OurStory() {
   return (
     <main className="self-center text-4xl font-bold text-center text-white">
-      Contact Us coming soon...
+      Our Story coming soon...
     </main>
   );
 }

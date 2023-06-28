@@ -15,9 +15,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body>
+      <body className="grid bg-stone-800 grid-rows-[auto_1fr_auto] min-h-screen">
         <NavBar />
-        <main>{children}</main>
+        {children}
         <Footer />
       </body>
     </html>
