@@ -1,6 +1,7 @@
 import "./globals.css";
 import NavBar from "./navbar";
 import Footer from "./footer";
+import { CartProvider } from "@/hooks/use-cart";
 
 export const metadata = {
   title: "Pizza 4 Prez",
@@ -15,11 +16,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className="grid bg-stone-800 grid-rows-[auto_1fr_auto] min-h-screen">
-        <NavBar />
-        {children}
-        <Footer />
-      </body>
+      <CartProvider>
+        <body className="grid bg-stone-800 grid-rows-[auto_1fr_auto] min-h-screen">
+          <NavBar />
+          {children}
+          <Footer />
+        </body>
+      </CartProvider>
     </html>
   );
 }
