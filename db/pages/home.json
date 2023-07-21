@@ -1,47 +1,4 @@
 {
-  "entrees": [
-    {
-      "image": {
-        "alt": "supreme pizza",
-        "src": "https://pizza-for-president.vercel.app/static/media/product-1.36d084f3e4823b981b4b.jpg"
-      },
-      "name": "Supreme Pizza",
-      "ingredients": [
-        "marinara sauce",
-        "basil",
-        "italian sausage",
-        "roma tomatoes",
-        "black olives",
-        "pesto"
-      ],
-      "price": 12.99
-    },
-    {
-      "image": {
-        "alt": "hawaiian paradise",
-        "src": "https://pizza-for-president.vercel.app/static/media/product-2.4c066971ce4367c6e0bc.jpg"
-      },
-      "name": "Hawaiian Paradise",
-      "ingredients": ["bbq sause", "pineapple", "onion", "parsley", "chicken"],
-      "price": 12.99
-    },
-    {
-      "image": {
-        "alt": "veggie overload",
-        "src": "https://pizza-for-president.vercel.app/static/media/product-3.115cc32b63d9b7485e7e.jpg"
-      },
-      "name": "Veggie Overload",
-      "ingredients": [
-        "marinara sauce",
-        "bell pepper",
-        "arugula",
-        "roma tomatoes",
-        "mushroom",
-        "black olives"
-      ],
-      "price": 12.99
-    }
-  ],
   "desserts": [
     {
       "image": {

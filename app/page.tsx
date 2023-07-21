@@ -2,8 +2,30 @@ import Image from "next/image";
 import jsonData from "^home.json";
 import ProductCard from "./product-card";
 
-export default function Home() {
-  const { entrees, desserts } = jsonData;
+export default async function Home() {
+  const [products, prices] = await Promise.all([
+    fetch("https://api.stripe.com/v1/products", {
+      headers: {
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      },
+    }).then((r) => r.json()),
+    fetch("https://api.stripe.com/v1/prices", {
+      headers: {
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+      },
+    }).then((r) => r.json()),
+  ]).then((arr) => arr.map((e) => e.data));
+
+  const entrees = products.map((e) => ({
+    name: e.name,
+    ingredients: e.description.includes("•")
+      ? e.description.replace(/•/g, "").split("\n")
+      : null,
+    description: e.description.includes("•") ? null : e.description,
+    price: prices.find((p) => p.product === e.id).unit_amount / 100,
+    image: { alt: e.name, src: e.images[0] },
+  }));
+  const { desserts } = jsonData;
   const randomDessert =
     desserts[Math.round(Math.random() * (desserts.length - 1))];
   return (
@@ -30,9 +52,10 @@ export default function Home() {
         <h3 className="text-2xl font-extrabold uppercase">
           Choose your favorite
         </h3>
-        {entrees.map((entree, i) => (
-          <ProductCard key={i} {...entree} />
-        ))}
+        {entrees.map((entree, i) => {
+          console.log(entree.images);
+          return <ProductCard key={i} {...entree} />;
+        })}
       </section>
       <section className="bg-stone-800">
         <div className="relative rounded-full overflow-hidden aspect-square">
