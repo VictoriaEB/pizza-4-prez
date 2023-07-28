@@ -1,6 +1,63 @@
 import Image from "next/image";
-import jsonData from "^home.json";
 import ProductCard from "./product-card";
+
+type Entree = {
+  name: string;
+  image: { alt: string; src: string };
+  price: number;
+  ingredients: string[];
+};
+
+type Dessert = {
+  name: string;
+  image: { alt: string; src: string };
+  price: number;
+  description: string;
+};
+
+type StripeProduct = {
+  id: string;
+  object: string;
+  active: boolean;
+  attributes: any[];
+  created: number;
+  default_price: any;
+  description: string;
+  images: string[];
+  livemode: boolean;
+  metadata: object;
+  name: string;
+  package_dimensions: any;
+  shippable: any;
+  statement_descriptor: any;
+  tax_code: any;
+  type: string;
+  unit_label: any;
+  updated: number;
+  url: any;
+};
+
+type StripePrice = {
+  id: string;
+  object: string;
+  active: boolean;
+  billing_scheme: string;
+  created: number;
+  currency: string;
+  custom_unit_amount: any;
+  livemode: boolean;
+  lookup_key: any;
+  metadata: object;
+  nickname: any;
+  product: string;
+  recurring: any;
+  tax_behavior: string;
+  tiers_mode: any;
+  transform_quantity: any;
+  type: string;
+  unit_amount: number;
+  unit_amount_decimal: string;
+};
 
 export default async function Home() {
   const [products, prices] = await Promise.all([
@@ -8,24 +65,36 @@ export default async function Home() {
       headers: {
         Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
       },
-    }).then((r) => r.json()),
+    })
+      .then((r) => r.json())
+      .then((r) => r.data as StripeProduct[]),
     fetch("https://api.stripe.com/v1/prices", {
       headers: {
         Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
       },
-    }).then((r) => r.json()),
-  ]).then((arr) => arr.map((e) => e.data));
+    })
+      .then((r) => r.json())
+      .then((r) => r.data as StripePrice[]),
+  ]);
 
-  const entrees = products.map((e) => ({
-    name: e.name,
-    ingredients: e.description.includes("•")
-      ? e.description.replace(/•/g, "").split("\n")
-      : null,
-    description: e.description.includes("•") ? null : e.description,
-    price: prices.find((p) => p.product === e.id).unit_amount / 100,
-    image: { alt: e.name, src: e.images[0] },
-  }));
-  const { desserts } = jsonData;
+  const entrees: Entree[] = products
+    .filter((p) => p.description.includes("•"))
+    .map((e) => ({
+      name: e.name,
+      ingredients: e.description.replace(/•/g, "").split("\n"),
+      price: prices.find((p) => p.product === e.id)!.unit_amount / 100,
+      image: { alt: e.name, src: e.images[0] },
+    }));
+
+  const desserts: Dessert[] = products
+    .filter((p) => !p.description.includes("•"))
+    .map((e) => ({
+      name: e.name,
+      description: e.description,
+      price: prices.find((p) => p.product === e.id)!.unit_amount / 100,
+      image: { alt: e.name, src: e.images[0] },
+    }));
+
   const randomDessert =
     desserts[Math.round(Math.random() * (desserts.length - 1))];
   return (
@@ -52,10 +121,9 @@ export default async function Home() {
         <h3 className="text-2xl font-extrabold uppercase">
           Choose your favorite
         </h3>
-        {entrees.map((entree, i) => {
-          console.log(entree.images);
-          return <ProductCard key={i} {...entree} />;
-        })}
+        {entrees.map((entree, i) => (
+          <ProductCard key={i} {...entree} />
+        ))}
       </section>
       <section className="bg-stone-800">
         <div className="relative rounded-full overflow-hidden aspect-square">
