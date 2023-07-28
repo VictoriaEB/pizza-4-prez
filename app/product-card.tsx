@@ -2,45 +2,40 @@
 
 import useCart from "@/hooks/use-cart";
 import Image from "next/image";
+import Stripe from "stripe";
 
-type ProductCardProps = {
-  name: string;
-  image: { alt: string; src: string };
+type Props = {
+  type: "entree" | "dessert";
+  product: Stripe.Product;
   price: number;
-  ingredients?: string[];
-  description?: string;
 };
-
-export default function ProductCard({
-  image,
-  name,
-  price,
-  description,
-  ingredients,
-}: ProductCardProps) {
+export default function ProductCard({ type, product, price }: Props) {
   const { setCart } = useCart();
   return (
     <div className="grid gap-6 text-center">
       <Image
         className="border-r-8 border-b-8 border-yellow-500 rounded-br-full h-72 object-cover"
-        alt={image.alt}
-        src={image.src}
+        alt={product.name}
+        src={product.images[0]}
         width={640}
         height={0}
       />
-      <h4 className="text-4xl font-extrabold">{name}</h4>
-      {ingredients ? (
+      <h4 className="text-4xl font-extrabold">{product.name}</h4>
+      {type === "entree" ? (
         <ul className="list-disc ml-4 gap-x-8 text-left columns-2 justify-self-center capitalize">
-          {ingredients.map((ingredient, i) => (
-            <li key={i}>{ingredient}</li>
-          ))}
+          {product
+            .description!.replace(/•/g, "")
+            .split("\n")
+            .map((ingredient, i) => (
+              <li key={i}>{ingredient}</li>
+            ))}
         </ul>
       ) : (
-        description
+        product.description
       )}
       <div className="text-3xl font-extrabold italic">${price}</div>
       <button
-        onClick={() => setCart((c) => [...c, name])}
+        onClick={() => setCart((c) => [...c, product])}
         className="bg-red-600 rounded-full uppercase text-xl font-bold py-4"
       >
         add to cart

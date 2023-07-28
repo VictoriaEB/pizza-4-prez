@@ -24,7 +24,7 @@ export default function Cart({ isOpen }: { isOpen: boolean }) {
                   isOpen ? "h-6" : "h-0"
                 }`}
               >
-                {lineItem}
+                {lineItem.name}
               </li>
             ))}
           </ul>
