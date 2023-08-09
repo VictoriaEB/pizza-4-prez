@@ -4,10 +4,18 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { FaBars, FaPizzaSlice, FaShoppingCart } from "react-icons/fa";
 import Cart from "./cart";
+import useCart from "@/hooks/use-cart";
 
 export default function NavBar() {
   const [hasBg, setHasBg] = useState(false);
   const [isOpen, setIsOpen] = useState<"cart" | "menu" | null>(null);
+
+  const cart = useCart();
+
+  useEffect(() => {
+    if (!cart.lineItems.length) return;
+    setIsOpen("cart");
+  }, [cart]);
 
   useEffect(() => {
     const handleScroll = () => setHasBg(window.scrollY > 100);
@@ -34,10 +42,22 @@ export default function NavBar() {
         </div>
       </Link>
       <div className="flex text-3xl gap-8">
-        <FaShoppingCart
-          onClick={() => setIsOpen((o) => (o === "cart" ? null : "cart"))}
-        />
+        <div className="justify-center flex items-center">
+          {!!cart.lineItems.length && (
+            <small className="absolute text-xs text-red-600 ml-1 -mt-1 pointer-events-none">
+              {cart.lineItems.reduce(
+                (acc, lineItem) => acc + lineItem.quantity,
+                0
+              )}
+            </small>
+          )}
+          <FaShoppingCart
+            className="cursor-pointer"
+            onClick={() => setIsOpen((o) => (o === "cart" ? null : "cart"))}
+          />
+        </div>
         <FaBars
+          className="cursor-pointer"
           onClick={() => setIsOpen((o) => (o === "menu" ? null : "menu"))}
         />
       </div>

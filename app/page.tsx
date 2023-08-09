@@ -1,10 +1,6 @@
 import Image from "next/image";
 import ProductCard from "./product-card";
-import Stripe from "stripe";
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2022-11-15",
-});
+import stripe from "@/services/stripe";
 
 export default async function Home() {
   const { products, prices } = await Promise.all([

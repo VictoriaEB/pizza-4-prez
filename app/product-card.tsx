@@ -10,7 +10,8 @@ type Props = {
   price: number;
 };
 export default function ProductCard({ type, product, price }: Props) {
-  const { setCart } = useCart();
+  const cart = useCart();
+
   return (
     <div className="grid gap-6 text-center">
       <Image
@@ -35,7 +36,7 @@ export default function ProductCard({ type, product, price }: Props) {
       )}
       <div className="text-3xl font-extrabold italic">${price}</div>
       <button
-        onClick={() => setCart((c) => [...c, product])}
+        onClick={() => cart.addProduct(product, price)}
         className="bg-red-600 rounded-full uppercase text-xl font-bold py-4"
       >
         add to cart
