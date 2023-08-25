@@ -8,13 +8,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import Stripe from "stripe";
 
 type Cart = {
   lineItems: LineItem[];
-  addProduct: (product: Stripe.Product, price: number) => void;
+  addLineItem: (lineItem: LineItem) => void;
   removeProduct: (productId: string) => void;
   getSubtotal: () => number;
+  clear: () => void;
 };
 
 function throwUninitialized(value: string) {
@@ -23,9 +23,10 @@ function throwUninitialized(value: string) {
 
 const cartContext = createContext<Cart>({
   lineItems: [],
-  addProduct: () => throwUninitialized("addProduct"),
+  addLineItem: () => throwUninitialized("addProduct"),
   removeProduct: () => throwUninitialized("removeProduct"),
   getSubtotal: () => Number.NaN,
+  clear: () => throwUninitialized("clear"),
 });
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -58,14 +59,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [lineItems]);
 
-  function addProduct(product: Stripe.Product, price: number) {
+  function addLineItem(lineItem: LineItem) {
     setLineItems((lineItems) => {
       const updatedLineItems = [...(lineItems ?? [])];
       const lineItemIndex = updatedLineItems.findIndex(
-        (lineItem) => lineItem.product.id === product.id
+        (updatedLineItem) => updatedLineItem.product.id === lineItem.product.id
       );
       if (lineItemIndex === -1) {
-        updatedLineItems.push({ product, price, quantity: 1 });
+        updatedLineItems.push({
+          product: lineItem.product,
+          price: lineItem.price,
+          quantity: 1,
+        });
       } else {
         updatedLineItems[lineItemIndex].quantity++;
       }
@@ -90,19 +95,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
   function getSubtotal() {
     return (
       lineItems?.reduce(
-        (acc, lineItem) => acc + lineItem.price * lineItem.quantity,
+        (acc, lineItem) =>
+          acc + (lineItem.price.unit_amount! / 100) * lineItem.quantity,
         0
       ) ?? 0
     );
   }
 
+  function clear() {
+    deleteCookie("_p4p_lineItems");
+    setLineItems([]);
+  }
+
   return (
     <cartContext.Provider
       value={{
-        addProduct,
+        addLineItem,
         lineItems: lineItems ?? [],
         removeProduct,
         getSubtotal,
+        clear,
       }}
     >
       {children}

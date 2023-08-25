@@ -7,7 +7,7 @@ import Stripe from "stripe";
 type Props = {
   type: "entree" | "dessert";
   product: Stripe.Product;
-  price: number;
+  price: Stripe.Price;
 };
 export default function ProductCard({ type, product, price }: Props) {
   const cart = useCart();
@@ -34,9 +34,17 @@ export default function ProductCard({ type, product, price }: Props) {
       ) : (
         product.description
       )}
-      <div className="text-3xl font-extrabold italic">${price}</div>
+      <div className="text-3xl font-extrabold italic">
+        ${(price.unit_amount! / 100).toFixed(2)}
+      </div>
       <button
-        onClick={() => cart.addProduct(product, price)}
+        onClick={() =>
+          cart.addLineItem({
+            price,
+            product,
+            quantity: 1,
+          })
+        }
         className="bg-red-600 rounded-full uppercase text-xl font-bold py-4"
       >
         add to cart

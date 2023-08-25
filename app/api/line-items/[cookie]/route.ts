@@ -23,7 +23,7 @@ export async function GET(req: Request) {
 
   const lineItems: LineItem[] = products.map((product) => ({
     product,
-    price: prices.find((p) => p.product === product.id)!.unit_amount! / 100,
+    price: prices.find((p) => p.product === product.id)!,
     quantity: cookieData.find((d) => d.productId === product.id)!.quantity,
   }));
 

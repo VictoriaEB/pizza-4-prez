@@ -23,6 +23,7 @@ export default async function Home() {
           alt="PizzaBackground"
           src="https://pizza-for-president.vercel.app/static/media/pizza-3.f2f9b9a49128f877c57f.jpg"
           fill
+          priority
         />
         <div className="absolute bg-black top-0 bottom-0 right-0 left-0 opacity-50" />
         <div className="relative text-white font-extrabold grid gap-4 max-w-sm">
@@ -42,7 +43,7 @@ export default async function Home() {
         {entrees.map((e, i) => (
           <ProductCard
             key={i}
-            price={prices.find((p) => p.product === e.id)!.unit_amount! / 100}
+            price={prices.find((p) => p.product === e.id)!}
             product={e}
             type="entree"
           />
@@ -70,7 +71,7 @@ export default async function Home() {
         {desserts.map((d, i) => (
           <ProductCard
             key={i}
-            price={prices.find((p) => p.product === d.id)!.unit_amount! / 100}
+            price={prices.find((p) => p.product === d.id)!}
             product={d}
             type="dessert"
           />

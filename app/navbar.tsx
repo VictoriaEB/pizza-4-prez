@@ -13,11 +13,6 @@ export default function NavBar() {
   const cart = useCart();
 
   useEffect(() => {
-    if (!cart.lineItems.length) return;
-    setIsOpen("cart");
-  }, [cart]);
-
-  useEffect(() => {
     const handleScroll = () => setHasBg(window.scrollY > 100);
     window.addEventListener("scroll", handleScroll);
 
@@ -35,7 +30,7 @@ export default function NavBar() {
         href="/"
         className="gap-2 items-center grid grid-cols-[1fr_auto] leading-none"
       >
-        <FaPizzaSlice className="text-3xl " />
+        <FaPizzaSlice className="text-3xl" />
         <div className="grid">
           Pizza
           <span>4 Prez</span>
