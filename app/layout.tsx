@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <head></head>
       <CartProvider>
-        <body className="grid bg-stone-800 grid-rows-[auto_1fr_auto] min-h-screen">
+        <body className="grid bg-stone-800 grid-rows-[auto_1fr_auto] min-h-screen max-w-md mx-auto">
           <NavBar />
           {children}
           <Footer />

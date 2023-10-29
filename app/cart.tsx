@@ -37,7 +37,7 @@ export default function Cart({ isOpen }: { isOpen: boolean }) {
       ),
     })
       .then((r) => r.text())
-      .then(router.push);
+      .then((checkoutUrl) => router.push(checkoutUrl));
   }
 
   return (
@@ -107,7 +107,7 @@ export default function Cart({ isOpen }: { isOpen: boolean }) {
                 </tr>
               </tfoot>
             </table>
-
+            {/*TODO: add pay-later checkbox*/}
             <button
               onClick={handleCheckout}
               className="bg-amber-600 px-8 py-4 rounded-3xl justify-self-center self-end"

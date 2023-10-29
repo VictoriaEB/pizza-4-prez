@@ -31,12 +31,18 @@ export default async function Home() {
             Greatest Pizza Ever
           </h1>
           <h2 className="text-2xl">Ready in seconds!</h2>
-          <button className="px-8 py-4 bg-red-600 text-xl rounded-full uppercase">
+          <a
+            href="#choose"
+            className="px-8 py-4 bg-red-600 text-xl rounded-full uppercase"
+          >
             Place Order
-          </button>
+          </a>
         </div>
       </section>
-      <section className="bg-stone-800 text-white grid py-12 gap-10 px-4">
+      <section
+        id="choose"
+        className="scroll-m-8 bg-stone-800 text-white grid py-12 gap-10 px-4"
+      >
         <h3 className="text-2xl font-extrabold uppercase">
           Choose your favorite
         </h3>
